@@ -22,3 +22,4 @@ db.connect()
 db.create_tables([Meal, Survey, SurveyAnswer, SurveyQuestion, Question, User, UserExercise, UserMeal], safe=True)
 
 app.include_router(auth.router)
+app.include_router(users.router)

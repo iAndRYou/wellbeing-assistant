@@ -3,13 +3,14 @@ from fastapi import Depends, HTTPException, status
 from datetime import datetime, timedelta
 
 from database_modules.entities import User
+from models import UserDto
 from .config import *
 
 
 
-async def decode_token(token: str = Depends(oauth2_scheme)) -> User:
+async def validate_token(token: str = Depends(oauth2_scheme)) -> UserDto:
     '''
-    Decode a token and return the user
+    Validate a token and return the user
     '''
 
     try:
@@ -23,10 +24,17 @@ async def decode_token(token: str = Depends(oauth2_scheme)) -> User:
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = User.get(User.email == email)
-    if user is None:
+    try:
+        user = User.get(User.email == email)
+    except DoesNotExist:
         raise HTTPException(status_code=404, detail="User not found")
-    return user
+    
+    userDto = UserDto(
+        id = user.id,
+        name = user.name,
+        email = user.email,
+    )
+    return userDto
 
 
 def create_access_token(data: dict):

@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from peewee import *
 
 from models import Token, UserRegisterDto
-from auth.jwt_handler import pwd_context, create_access_token, decode_token, oauth2_scheme, get_password_hash, verify_password, authenticate_user
+from auth.jwt_handler import pwd_context, create_access_token, oauth2_scheme, get_password_hash, verify_password, authenticate_user
 from database_modules.entities import User
 
 router = APIRouter(
@@ -48,3 +48,4 @@ async def register_user(new_user: UserRegisterDto = Body()):
         data={"sub": dbuser.email}
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
