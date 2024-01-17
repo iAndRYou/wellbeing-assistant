@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database_modules.database import db
 from database_modules.entities import *
+from routers import auth, users
 
 app = FastAPI(
     title="Wellbeing Assistant API"
@@ -20,6 +21,4 @@ db.connect()
 
 db.create_tables([Meal, Survey, SurveyAnswer, SurveyQuestion, Question, User, UserExercise, UserMeal], safe=True)
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app.include_router(auth.router)

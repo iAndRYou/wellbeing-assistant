@@ -2,7 +2,7 @@ from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from datetime import datetime, timedelta
 
-from ..database_modules import User
+from database_modules.entities import User
 from .config import *
 
 

@@ -3,10 +3,11 @@ from pydantic import BaseModel, EmailStr, Field
  DTOs
 '''
 # From client to server
-class UserLoginDto(BaseModel):
-    '''User model for login purposes'''
-    email: EmailStr = Field(default=...)
-    password: str = Field(default=...)
+# NOTE: Not needed because of FastAPI's Oauth2 implementation
+# class UserLoginDto(BaseModel):
+#     '''User model for login purposes'''
+#     email: EmailStr = Field(default=...)
+#     password: str = Field(default=...)
 
 class UserRegisterDto(BaseModel):
     '''User model for registering purposes'''

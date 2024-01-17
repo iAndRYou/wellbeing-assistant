@@ -40,7 +40,7 @@ class SurveyAnswer(BaseModel):
     
 class User(BaseModel):
     name = CharField()
-    email = CharField()
+    email = CharField(unique = True)
     password_hash = CharField()
     
 class UserExercise(BaseModel):
