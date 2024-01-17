@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from models.database import db
-from models.entities import *
+from database_modules.database import db
+from database_modules.entities import *
 
 app = FastAPI(
     title="Wellbeing Assistant API"
@@ -18,7 +18,7 @@ app.add_middleware(
 
 db.connect()
 
-db.create_tables([], safe=True)
+db.create_tables([Meal, Survey, SurveyAnswer, SurveyQuestion, Question, User, UserExercise, UserMeal], safe=True)
 
 @app.get("/")
 async def root():

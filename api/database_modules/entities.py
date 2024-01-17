@@ -1,4 +1,5 @@
 from peewee import Model, SqliteDatabase, CharField, ForeignKeyField, IntegerField, ManyToManyField, DateTimeField, DateField
+import datetime
 from .database import db
 
 class BaseModel(Model):
