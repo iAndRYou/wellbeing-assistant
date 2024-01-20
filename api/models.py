@@ -1,7 +1,9 @@
 from pydantic import BaseModel, EmailStr, Field
-from enums import *
 from typing import Type, Union
 from datetime import datetime
+
+from enums import *
+
 
 
 '''
@@ -33,6 +35,20 @@ class MealDto(BaseModel):
     fiber: int = Field(default=...)
     meal_type: MealType = Field(default=...)
     
+    @staticmethod
+    def from_orm(meal):
+        return MealDto(
+            id = meal.id,
+            name = meal.name,
+            health_index = meal.health_index,
+            glycemic_index = meal.glycemic_index,
+            protein = meal.protein,
+            carbohydrates = meal.carbohydrates,
+            fats = meal.fats,
+            fiber = meal.fiber,
+            meal_type = MealType(meal.meal_type)
+        )
+    
     
 class ExerciseDto(BaseModel):
     id : int = Field(default=...)
@@ -40,13 +56,22 @@ class ExerciseDto(BaseModel):
     exercise_type: ExerciseType = Field(default=...)
     category: str = Field(default=...)
     
+    @staticmethod
+    def from_orm(exercise):
+        return ExerciseDto(
+            id = exercise.id,
+            name = exercise.name,
+            exercise_type = ExerciseType(exercise.exercise_type),
+            category = exercise.category
+        )
+    
 class Recommendation(BaseModel):
     recommendation : Union['CompositeMeal', 'ExerciseDto'] = Field(default=...)
     type : ActivityType = Field(default=...)
     date : datetime = Field(default=...)
     
 class History(BaseModel):
-    history : list[Activity] = Field(default=...)
+    history : list['Activity'] = Field(default=...)
     
 class ActivityDetails(BaseModel):
     activity : Union['CompositeMeal', 'ExerciseDto'] = Field(default=...)
@@ -57,7 +82,7 @@ class SurveyDto(BaseModel):
     id : int = Field(default=...)
     name: str = Field(default=...)
     survey_type: SurveyType = Field(default=...)
-    questions: list[QuestionDto] = Field(default=...)
+    questions: list['QuestionDto'] = Field(default=...)
     
 # From client to server
 # ONLY used for communication with the server
@@ -67,12 +92,6 @@ class UserRegisterDto(BaseModel):
     name: str = Field(default=...)
     email: EmailStr = Field(default=...)
     password: str = Field(default=...)
-
-# consumed meal
-class UserMealDto(BaseModel):
-    '''Meal model sent from the client describing an ingredient/prepped meal consumed by the user'''
-    meal_id: int = Field(default=...)
-    weight: int = Field(default=...)
     
 class UserCompositeMealDto(BaseModel):
     '''Meal model sent from the client describing a complete meal consumed by the user'''''
@@ -91,10 +110,10 @@ class ActivityDetailsRequest(BaseModel):
     activity_type : ActivityType = Field(default=...)
     
 class SurveyAnswerRequest(BaseModel):
-    list_of_answers : list[SurveyAnswerDto] = Field(default=...)
+    list_of_answers : list['SurveyAnswerDto'] = Field(default=...)
     
 '''
-Internal models
+Internal models (not directy exposed in the communication with the client)
 '''
 
 class CompositeMeal(BaseModel):
@@ -113,6 +132,12 @@ class SurveyAnswerDto(BaseModel):
     survey_id : int = Field(default=...)
     question_id: int = Field(default=...)
     answer_score: int = Field(default=...)
+    
+# consumed meal
+class UserMealDto(BaseModel):
+    '''Meal model sent from the client describing an ingredient/prepped meal consumed by the user'''
+    meal_id: int = Field(default=...)
+    weight: int = Field(default=...)
     
 
 
