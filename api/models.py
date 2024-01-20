@@ -95,7 +95,7 @@ class UserRegisterDto(BaseModel):
     
 class UserCompositeMealDto(BaseModel):
     '''Meal model sent from the client describing a complete meal consumed by the user'''''
-    meals : list[UserMealDto] = Field(default=...)
+    meals : list['UserMealDto'] = Field(default=...)
 
 # performed exercise
 class UserExerciseDto(BaseModel):
