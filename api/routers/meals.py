@@ -2,7 +2,7 @@ from fastapi import APIRouter, Query, Path, Depends, Body, Form, HTTPException
 from peewee import *
 
 from models import UserDto, MealDto
-from auth.jwt_handler import pwd_context, create_access_token, oauth2_scheme, validate_token, get_password_hash, verify_password, authenticate_user
+from auth.jwt_handler import validate_token
 from database_modules.entities import *
 from enums import MealType
 

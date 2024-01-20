@@ -92,10 +92,15 @@ class UserRegisterDto(BaseModel):
     name: str = Field(default=...)
     email: EmailStr = Field(default=...)
     password: str = Field(default=...)
-    
+
+class UserMealDto(BaseModel):
+    '''Meal model sent from the client describing an ingredient/prepped meal consumed by the user'''
+    meal_id: int = Field(default=...)
+    weight: int = Field(default=...)
+
 class UserCompositeMealDto(BaseModel):
     '''Meal model sent from the client describing a complete meal consumed by the user'''''
-    meals : list['UserMealDto'] = Field(default=...)
+    meals : list[UserMealDto] = Field(default=...)
 
 # performed exercise
 class UserExerciseDto(BaseModel):
@@ -133,11 +138,8 @@ class SurveyAnswerDto(BaseModel):
     question_id: int = Field(default=...)
     answer_score: int = Field(default=...)
     
-# consumed meal
-class UserMealDto(BaseModel):
-    '''Meal model sent from the client describing an ingredient/prepped meal consumed by the user'''
-    meal_id: int = Field(default=...)
-    weight: int = Field(default=...)
+
+
     
 
 

@@ -20,8 +20,9 @@ app.add_middleware(
 
 db.connect()
 
-db.create_tables([Meal, Survey, SurveyAnswer, SurveyQuestion, Question, User, UserExercise, UserMeal], safe=True)
+db.create_tables([Exercise, Meal, Survey, SurveyAnswer, SurveyQuestion, Question, User, UserExercise, UserMeal], safe=True)
 
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(meals.router)
+app.include_router(exercises.router)
