@@ -23,7 +23,7 @@ class Meal(BaseModel):
     
 class Survey(BaseModel):
     name = CharField()
-    survey_type = CharField()  #wnum SurveyType  "post-meal" / "post-exercise" / "well-being"
+    survey_type = IntegerField()  #enum SurveyType  "post-meal" / "post-exercise" / "well-being"
     
 class Question(BaseModel):
     question_content = CharField()
@@ -36,7 +36,7 @@ class SurveyQuestion(BaseModel):
 class SurveyAnswer(BaseModel):
     survey = ForeignKeyField(Survey)
     question = ForeignKeyField(Question)
-    answer = CharField()
+    answer_score = IntegerField()
     
 class User(BaseModel):
     name = CharField()
