@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, Field
-from typing import Type, Union
+from typing import Type, Union, Optional
 from datetime import datetime
 
 from enums import *
@@ -77,12 +77,24 @@ class ActivityDetails(BaseModel):
     activity : Union['CompositeMeal', 'ExerciseDto'] = Field(default=...)
     activity_type : ActivityType = Field(default=...)
     
+    
+class QuestionDto(BaseModel):
+    id : int = Field(default=...)
+    question_content: str = Field(default=...)
+    
+    @staticmethod
+    def from_orm(question):
+        return QuestionDto(
+            id = question.id,
+            question_content = question.question_content
+        )
+    
 class SurveyDto(BaseModel):
     '''Survey model returned to the client'''
     id : int = Field(default=...)
     name: str = Field(default=...)
     survey_type: SurveyType = Field(default=...)
-    questions: list['QuestionDto'] = Field(default=...)
+    questions: list[QuestionDto] = Field(default=...)
     
 # From client to server
 # ONLY used for communication with the server
@@ -106,16 +118,22 @@ class UserCompositeMealDto(BaseModel):
 class UserExerciseDto(BaseModel):
     '''Exercise model sent from the client describing an exercise performed by the user'''
     exercise_id: int = Field(default=...)
-    time: int = Field()
-    repetitions: int = Field()
+    time: Optional[int] = Field()
+    repetitions: Optional[int] = Field()
     
     
 class ActivityDetailsRequest(BaseModel):
     activity_id : int = Field(default=...)
     activity_type : ActivityType = Field(default=...)
     
+    
+class SurveyAnswerDto(BaseModel):
+    survey_id : int = Field(default=...)
+    question_id: int = Field(default=...)
+    answer_score: int = Field(default=...)
+    
 class SurveyAnswerRequest(BaseModel):
-    list_of_answers : list['SurveyAnswerDto'] = Field(default=...)
+    list_of_answers : list[SurveyAnswerDto] = Field(default=...)
     
 '''
 Internal models (not directy exposed in the communication with the client)
@@ -126,18 +144,14 @@ class CompositeMeal(BaseModel):
     
 class Activity(BaseModel):
     activity_id : int = Field(default=...)
+    activity_name : str = Field(default=...)
     activity_type : ActivityType = Field(default=...)
     date : datetime = Field(default=...)
     
-class QuestionDto(BaseModel):
-    id : int = Field(default=...)
-    question_content: str = Field(default=...)
+
     
-class SurveyAnswerDto(BaseModel):
-    survey_id : int = Field(default=...)
-    question_id: int = Field(default=...)
-    answer_score: int = Field(default=...)
-    
+
+
 
 
     

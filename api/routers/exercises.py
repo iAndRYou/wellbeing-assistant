@@ -12,6 +12,9 @@ router = APIRouter(
 
 @router.get('/', response_model=list[ExerciseDto], tags=['exercises'])
 async def get_exercises(category : str = None, user: UserDto = Depends(validate_token)):
+    '''
+        Returns a list of all exercises in a given category or all exercises if no category is specified
+    '''
     if category is None:
         exercises = Exercise.select()
     else:
@@ -23,6 +26,9 @@ async def get_exercises(category : str = None, user: UserDto = Depends(validate_
 
 @router.get('/{exercise_id}', response_model=ExerciseDto, tags=['exercises'])
 async def get_exercise(exercise_id: int, user: UserDto = Depends(validate_token)):
+    '''
+        Returns a specific exercise
+    '''
     try:
         exercise = Exercise.get(Exercise.id == exercise_id)
     except DoesNotExist:

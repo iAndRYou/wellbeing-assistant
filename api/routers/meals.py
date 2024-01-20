@@ -14,10 +14,16 @@ router = APIRouter(
 
 @router.get('/', response_model=list[MealDto], tags=['meals'])
 async def get_meals(user: UserDto = Depends(validate_token)):
+    '''
+        Returns a list of all meals
+    '''
     return __get_all_meals_from_db()
 
 @router.get('/{meal_id}', response_model=MealDto, tags=['meals'])
 async def get_meal(meal_id: int, user: UserDto = Depends(validate_token)):
+    '''
+        Returns a specific meal
+    '''
     try:
         meal = Meal.get(Meal.id == meal_id)
     except DoesNotExist:
@@ -26,6 +32,9 @@ async def get_meal(meal_id: int, user: UserDto = Depends(validate_token)):
 
 @router.get('/ingredients/', response_model=list[MealDto], tags=['meals'])
 async def get_ingredients(user: UserDto = Depends(validate_token)):
+    '''
+        Returns a list of all ingredients
+    '''
     meals = __get_all_meals_from_db()
     ingredients = [m for m in meals if m.meal_type == MealType.INGREDIENT]
     
@@ -33,8 +42,11 @@ async def get_ingredients(user: UserDto = Depends(validate_token)):
         raise HTTPException(status_code=404, detail="No ingredients found")
     return ingredients
 
-@router.get('/prepered_meals/', response_model=list[MealDto], tags=['meals'])
+@router.get('/prepered-meals/', response_model=list[MealDto], tags=['meals'])
 async def get_prepered_meals(user: UserDto = Depends(validate_token)):
+    '''
+        Returns a list of all prepered meals
+    '''
     meals = __get_all_meals_from_db()
     prepered_meals = [m for m in meals if m.meal_type == MealType.PREPERED_MEAL]
 

@@ -7,7 +7,8 @@ from routers import auth, users, meals, surveys, exercises, recommendations
 
 
 app = FastAPI(
-    title="Wellbeing Assistant API"
+    title="Wellbeing Assistant API",
+    debug = True,
 )
 
 app.add_middleware(
@@ -26,3 +27,5 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(meals.router)
 app.include_router(exercises.router)
+app.include_router(surveys.router)
+app.include_router(recommendations.router)

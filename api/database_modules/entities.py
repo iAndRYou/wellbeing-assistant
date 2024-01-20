@@ -32,6 +32,7 @@ class Question(BaseModel):
 class SurveyQuestion(BaseModel):
     survey = ForeignKeyField(Survey) 
     question = ForeignKeyField(Question)
+    
 
 class SurveyAnswer(BaseModel):
     survey = ForeignKeyField(Survey)
