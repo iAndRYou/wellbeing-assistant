@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:assistant/model/access_token.dart';
+import 'package:assistant/model/history_item.dart';
 import 'package:http/http.dart';
 import 'package:assistant/model/user.dart';
 
@@ -37,6 +38,13 @@ class HttpServiceRepository {
   User _getUserFrom({required Response response}) {
     var responseBody = jsonDecode(response.body);
     return User.fromJson(responseBody);
+  }
+
+  List<HistoryItem> _getHistoryFrom({required Response response}) {
+    var responseBody = jsonDecode(response.body);
+    return responseBody
+        .map<HistoryItem>((item) => HistoryItem.fromJson(item))
+        .toList();
   }
 
   Future<AccessToken> getRegisterToken(
@@ -113,6 +121,29 @@ class HttpServiceRepository {
 
     if (response.statusCode == 200) {
       return _getUserFrom(response: response);
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<List<HistoryItem>> getUserHistory(
+      {required AccessToken accessToken}) async {
+    var response = await get(
+      Uri.parse('$_apiAddress/users/history'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('history');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return _getHistoryFrom(response: response);
     } else if (response.statusCode == 500) {
       throw HttpServiceServerException();
     } else {

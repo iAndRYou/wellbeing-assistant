@@ -25,6 +25,8 @@ class Styles {
   static const SizedBox defaultVerticalSpace = SizedBox(height: 20);
   static const SizedBox defaultHorizontalSpace = SizedBox(width: 20);
 
+  static const SizedBox largeVerticalSpace = SizedBox(height: 40);
+
   static const inputTransparentBorder = OutlineInputBorder(
     borderSide: BorderSide(color: Colors.transparent),
     borderRadius: defaultBorderRadius,
