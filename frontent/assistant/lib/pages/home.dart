@@ -16,10 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final sheetKey = GlobalKey<ExpandableBottomSheetState>();
-
-  final sheetHeight = 40.0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,29 +23,16 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         minimum: Styles.contentMarginTop,
-        child: ExpandableBottomSheet(
-          key: sheetKey,
-          enableToggle: true,
-          persistentContentHeight: MediaQuery.of(context).size.height * 0.5 -
-              MediaQuery.of(context).padding.top -
-              280,
-          background: Stack(
+        child: Padding(
+          padding: Styles.homePagePadding,
+          child: Column(
             children: [
-              Padding(
-                padding: Styles.homePagePadding,
-                child: Column(
-                  children: [
-                    _homeHeader(),
-                    Styles.defaultVerticalSpace,
-                    _searchField(),
-                    _favourite(),
-                  ],
-                ),
-              ),
+              _homeHeader(),
+              Styles.defaultVerticalSpace,
+              _searchField(),
+              _favourite(),
             ],
           ),
-          persistentHeader: _sheetHeader(),
-          expandableContent: _sheetContent(),
         ),
       ),
     );
@@ -64,42 +47,13 @@ class _HomePageState extends State<HomePage> {
           labelColor: Get.theme.colorScheme.onPrimary,
           fillColor: Get.theme.colorScheme.secondary,
         ),
-        onTap: () => sheetKey.currentState?.expand(),
-      );
-
-  Widget _sheetContent() => Container(
-        height: MediaQuery.of(context).size.height -
-            MediaQuery.of(context).padding.top -
-            240,
-        color: Get.theme.colorScheme.onPrimary,
-      );
-
-  Widget _sheetHeader() => Container(
-        height: sheetHeight,
-        decoration: BoxDecoration(
-          color: Get.theme.colorScheme.onPrimary,
-          borderRadius: const BorderRadius.only(
-            topLeft: Styles.wideRadius,
-            topRight: Styles.wideRadius,
-          ),
-        ),
-        child: Center(
-          child: Container(
-            height: 5,
-            width: 50,
-            decoration: BoxDecoration(
-              color: Get.theme.colorScheme.secondary,
-              borderRadius: Styles.wideBorderRadius,
-            ),
-          ),
-        ),
       );
 
   Widget _favourite() => BlocBuilder<UserBloc, UserState>(
         builder: (context, state) => Container(
           height: MediaQuery.of(context).size.height * 0.5,
           margin: Styles.contentMarginTop,
-          child: state.hasDevices
+          child: state.user.isNotEmpty
               //TODO: favoutite
               ? const SizedBox()
               : _noDevicesMessage(),
@@ -136,7 +90,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hi, ${state.username}',
+                  'Hi, ${state.name}',
                   style: Get.theme.textTheme.headlineSmall
                       ?.copyWith(color: Get.theme.colorScheme.onPrimary),
                 ),

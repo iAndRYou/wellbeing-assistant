@@ -24,7 +24,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(state.copyWith(formStatus: FormSubmitting()));
 
       try {
-        await authRepo.registerUserAndStoreTokens(
+        await authRepo.registerUserAndStoreToken(
           username: state.username,
           email: state.email,
           password: state.password,

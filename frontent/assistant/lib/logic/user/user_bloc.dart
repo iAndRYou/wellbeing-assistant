@@ -20,15 +20,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(state.copyWithValues(status: UserLoadingLocallyStoredTokens()));
       try {
         var accessToken = await preferencesRepo.getSavedAccessToken();
-        var refreshToken = await preferencesRepo.getSavedRefreshToken();
 
-        await authRepo.refreshSessionAndStoreTokens(
-            accessToken: accessToken, refreshToken: refreshToken);
-
-        var refreshedAccessToken = await preferencesRepo.getSavedAccessToken();
         emit(state.copyWithUser(
-            user: await httpRepo.getAuthenticatedUser(
-                accessToken: refreshedAccessToken)));
+            user:
+                await httpRepo.getAuthenticatedUser(accessToken: accessToken)));
 
         emit(state.copyWithValues(status: UserLocallyAuthorized()));
       } catch (e) {
@@ -37,20 +32,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     });
 
-    on<UserRefresh>((event, emit) async {
-      var accessToken = await preferencesRepo.getSavedAccessToken();
-      var refreshToken = await preferencesRepo.getSavedRefreshToken();
-      await authRepo.refreshSessionAndStoreTokens(
-          accessToken: accessToken, refreshToken: refreshToken);
-
-      var refreshedAccessToken = await preferencesRepo.getSavedAccessToken();
-      emit(state.copyWithUser(
-          user: await httpRepo.getAuthenticatedUser(
-              accessToken: refreshedAccessToken)));
-    });
-
     on<UserLogout>((event, emit) async {
-      await authRepo.logoutUserAndRemoveTokens();
+      await authRepo.logoutUserAndRemoveToken();
       emit(state.copyWithUser(user: const User.emptyValues()));
     });
 
@@ -58,11 +41,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       var accessToken = await preferencesRepo.getSavedAccessToken();
       emit(state.copyWithUser(
           user: await httpRepo.getAuthenticatedUser(accessToken: accessToken)));
-    });
-
-    on<UserFavouriteChanged>((event, emit) async {
-      preferencesRepo.saveFavorite(event.favourite);
-      emit(state.copyWithValues(favourite: event.favourite));
     });
   }
 }

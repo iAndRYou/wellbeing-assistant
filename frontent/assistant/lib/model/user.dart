@@ -1,51 +1,41 @@
-import 'package:assistant/model/user_device.dart';
-
 class User {
-  final String _username;
+  final int _id;
+  final String _name;
   final String _email;
-  final List<UserDevice> _devices;
 
-  String get username => _username;
+  int get id => _id;
+  String get name => _name;
   String get email => _email;
-  List<UserDevice> get devices => _devices;
-  bool get isEmpty => _username.isEmpty && _email.isEmpty && _devices.isEmpty;
+  bool get isEmpty => _name.isEmpty && _email.isEmpty;
   bool get isNotEmpty => !isEmpty;
 
-  User(
-      {required String username,
-      required String email,
-      required List<UserDevice> devices})
-      : _username = username,
-        _email = email,
-        _devices = devices;
+  User({required int id, required String name, required String email})
+      : _id = id,
+        _name = name,
+        _email = email;
 
-  const User.emptyValues(
-      {String username = '',
-      String email = '',
-      List<UserDevice> devices = const []})
-      : _username = username,
-        _email = email,
-        _devices = devices;
+  const User.emptyValues({int id = 0, String name = '', String email = ''})
+      : _id = id,
+        _name = name,
+        _email = email;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      username: json['username'],
+      id: json['id'],
+      name: json['name'],
       email: json['email'],
-      devices: (json['devices'] as List<dynamic>)
-          .map((e) => UserDevice.fromJson(e))
-          .toList(),
     );
   }
 
   User copyWith({
-    String? username,
+    int? id,
+    String? name,
     String? email,
-    List<UserDevice>? devices,
   }) {
     return User(
-      username: username ?? this.username,
+      id: id ?? this.id,
+      name: name ?? this.name,
       email: email ?? this.email,
-      devices: devices ?? this.devices,
     );
   }
 }

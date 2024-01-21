@@ -1,8 +1,6 @@
 import 'package:assistant/logic/preferences_repo.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/model/access_token.dart';
-import 'package:assistant/model/refresh_token.dart';
-import 'package:tuple/tuple.dart';
 
 class AuthRepository {
   final SharedPreferencesRepository _preferencesRepository;
@@ -14,38 +12,27 @@ class AuthRepository {
       : _preferencesRepository = preferencesRepository,
         _httpServiceRepository = httpServiceRepository;
 
-  void _storeTokens(Tuple2<AccessToken, RefreshToken> tokenPair) {
-    _preferencesRepository.storeAccessToken(tokenPair.item1);
-    _preferencesRepository.storeRefreshToken(tokenPair.item2);
+  void _storeToken(AccessToken token) {
+    _preferencesRepository.storeAccessToken(token);
   }
 
-  Future<void> registerUserAndStoreTokens(
+  Future<void> registerUserAndStoreToken(
       {required String username,
       required String email,
       required String password}) async {
-    var tokenPair = await _httpServiceRepository.getRegisterTokenPair(
-        username: username, email: email, password: password);
-    _storeTokens(tokenPair);
+    var tokenPair = await _httpServiceRepository.getRegisterToken(
+        name: username, email: email, password: password);
+    _storeToken(tokenPair);
   }
 
-  Future<void> loginUserAndStoreTokens(
+  Future<void> loginUserAndStoreToken(
       {required String username, required String password}) async {
     var tokenPair = await _httpServiceRepository.getLoginTokenPair(
         username: username, password: password);
-    _storeTokens(tokenPair);
+    _storeToken(tokenPair);
   }
 
-  Future<void> logoutUserAndRemoveTokens() async {
+  Future<void> logoutUserAndRemoveToken() async {
     await _preferencesRepository.removeStoredAccessToken();
-    await _preferencesRepository.removeStoredRefreshToken();
-    await _preferencesRepository.removeStoredFavorite();
-  }
-
-  Future<void> refreshSessionAndStoreTokens(
-      {required AccessToken accessToken,
-      required RefreshToken refreshToken}) async {
-    var tokenPair = await _httpServiceRepository.getRefreshTokenPair(
-        accessToken: accessToken, refreshToken: refreshToken);
-    _storeTokens(tokenPair);
   }
 }

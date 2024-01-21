@@ -18,7 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(formStatus: FormSubmitting()));
 
       try {
-        await authRepo.loginUserAndStoreTokens(
+        await authRepo.loginUserAndStoreToken(
           username: state.username,
           password: state.password,
         );
