@@ -80,18 +80,13 @@ class HttpServiceRepository {
 
   Future<AccessToken> getLoginTokenPair(
       {required String username, required String password}) async {
-    var response = await post(
-      Uri.parse('$_apiAddress/auth/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-        <String, String>{
-          'username': username,
-          'password': password,
-        },
-      ),
-    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+    var response = await post(Uri.parse('$_apiAddress/auth/login'),
+            headers: <String, String>{
+              'Content-Type':
+                  'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: 'username=$username&password=$password')
+        .timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
 
     print('login');
     print(response.statusCode);

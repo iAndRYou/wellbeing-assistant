@@ -61,9 +61,16 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  void _handleSubmit(BuildContext context, LoginState state) {
+  void _handleSubmit(BuildContext context, LoginState state) async {
     if (state.formStatus is FormSubmissionSuccess) {
+      Snackbars.showMessageSnackbar(
+          title: 'Success',
+          message: 'Successfully logged in',
+          icon: const SuccessIcon());
+
       UserBloc userBloc = context.read<UserBloc>()..add(UserUpdate());
+
+      await Future.delayed(Snackbars.waitDuration);
       if (userBloc.state.user.isNotEmpty) {
         Get.offAll(() => const HomePage(), transition: Styles.startTransition);
       }

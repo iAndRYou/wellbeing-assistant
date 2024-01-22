@@ -69,8 +69,9 @@ class RegisterPage extends StatelessWidget {
           icon: const SuccessIcon());
 
       UserBloc userBloc = context.read<UserBloc>()..add(UserUpdate());
+
+      await Future.delayed(Snackbars.waitDuration);
       if (userBloc.state.user.isNotEmpty) {
-        await Future.delayed(Snackbars.waitDuration);
         Get.offAll(() => const HomePage(), transition: Styles.startTransition);
       }
     } else if (state.formStatus is FormSubmissionTimeout) {
