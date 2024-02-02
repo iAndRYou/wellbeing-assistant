@@ -5,7 +5,7 @@ import 'package:assistant/logic/home/home_state.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/preferences_repo.dart';
 import 'package:assistant/model/history_item.dart';
-import 'package:assistant/pages/survey_page.dart';
+import 'package:assistant/pages/survey.dart';
 import 'package:assistant/utils/styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
