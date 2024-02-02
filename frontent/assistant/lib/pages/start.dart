@@ -34,14 +34,14 @@ class StartPage extends StatelessWidget {
             Buttons.startButton(
               label: 'Login',
               onPressed: () =>
-                  Get.to(() => LoginPage(), transition: Styles.startTransition),
+                  Get.to(() => LoginPage(), transition: Styles.fadeTransition),
               style:
                   Styles.primaryButtonStyle(minimumSize: const Size(150, 50)),
             ),
             Buttons.startButton(
               label: 'Register',
               onPressed: () => Get.to(() => RegisterPage(),
-                  transition: Styles.startTransition),
+                  transition: Styles.fadeTransition),
               style:
                   Styles.secondaryButtonStyle(minimumSize: const Size(150, 50)),
             ),

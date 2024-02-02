@@ -4,6 +4,7 @@ import 'package:assistant/logic/home/home_state.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/preferences_repo.dart';
 import 'package:assistant/model/history_item.dart';
+import 'package:assistant/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -51,34 +52,40 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _menuButtons() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Buttons.roundedRectangleButtonWithText(
-            onPressed: () {},
-            backgroundColor: Get.theme.colorScheme.background,
-            icon: Icons.sentiment_very_satisfied_rounded,
-            text: 'Log wellbeing',
-            iconColor: Get.theme.colorScheme.primary,
-            size: const Size(100, 50),
-          ),
-          Buttons.roundedRectangleButtonWithText(
-            onPressed: () {},
-            backgroundColor: Get.theme.colorScheme.background,
-            icon: Icons.restaurant_outlined,
-            text: 'Log meal',
-            iconColor: Get.theme.colorScheme.primary,
-            size: const Size(100, 50),
-          ),
-          Buttons.roundedRectangleButtonWithText(
-            onPressed: () {},
-            backgroundColor: Get.theme.colorScheme.background,
-            icon: Icons.run_circle_outlined,
-            text: 'Log excercise',
-            iconColor: Get.theme.colorScheme.primary,
-            size: const Size(100, 50),
-          ),
-        ],
+  Widget _menuButtons() => BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Buttons.roundedRectangleButtonWithText(
+              onPressed: () {
+                print('Wellbeing');
+                context.read<HomeBloc>().add(HomeRequestSpecificSurvey(
+                    surveyType: SurveyType.wellBeing));
+              },
+              backgroundColor: Get.theme.colorScheme.background,
+              icon: Icons.sentiment_very_satisfied_rounded,
+              text: 'Log wellbeing',
+              iconColor: Get.theme.colorScheme.primary,
+              size: const Size(100, 50),
+            ),
+            Buttons.roundedRectangleButtonWithText(
+              onPressed: () {},
+              backgroundColor: Get.theme.colorScheme.background,
+              icon: Icons.restaurant_outlined,
+              text: 'Log meal',
+              iconColor: Get.theme.colorScheme.primary,
+              size: const Size(100, 50),
+            ),
+            Buttons.roundedRectangleButtonWithText(
+              onPressed: () {},
+              backgroundColor: Get.theme.colorScheme.background,
+              icon: Icons.run_circle_outlined,
+              text: 'Log excercise',
+              iconColor: Get.theme.colorScheme.primary,
+              size: const Size(100, 50),
+            ),
+          ],
+        ),
       );
 
   Widget _history() => BlocBuilder<HomeBloc, HomeState>(

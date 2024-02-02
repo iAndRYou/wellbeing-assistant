@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:assistant/model/access_token.dart';
 import 'package:assistant/model/history_item.dart';
+import 'package:assistant/model/survey/answer.dart';
+import 'package:assistant/model/survey/survey.dart';
+import 'package:assistant/utils/enums.dart';
 import 'package:http/http.dart';
 import 'package:assistant/model/user.dart';
 
@@ -139,6 +142,89 @@ class HttpServiceRepository {
 
     if (response.statusCode == 200) {
       return _getHistoryFrom(response: response);
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<Survey?> getSurvey({required AccessToken accessToken}) async {
+    var response = await get(
+      Uri.parse('$_apiAddress/surveys/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('survey');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      if (response.body.isEmpty || response.body == 'null') {
+        return null;
+      } else {
+        return Survey.fromJson(jsonDecode(response.body));
+      }
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<Survey?> getSpecificSurvey(
+      {required AccessToken accessToken,
+      required SurveyType surveyType}) async {
+    print('surveyType');
+    print(surveyType.value);
+
+    var response = await get(
+      Uri.parse('$_apiAddress/surveys/?survey_type=${surveyType.value}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('survey');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      if (response.body.isEmpty || response.body == 'null') {
+        return null;
+      } else {
+        return Survey.fromJson(jsonDecode(response.body));
+      }
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<void> sendSurvey(
+      {required AccessToken accessToken, required List<Answer> answers}) async {
+    var response = await post(
+      Uri.parse('$_apiAddress/users/survey'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+      body: jsonEncode({
+        'list_of_answers': answers.map((e) => e.toJson()).toList(),
+      }),
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('sendSurvey');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return;
     } else if (response.statusCode == 500) {
       throw HttpServiceServerException();
     } else {

@@ -72,7 +72,7 @@ class RegisterPage extends StatelessWidget {
 
       await Future.delayed(Snackbars.waitDuration);
       if (userBloc.state.user.isNotEmpty) {
-        Get.offAll(() => const HomePage(), transition: Styles.startTransition);
+        Get.offAll(() => const HomePage(), transition: Styles.fadeTransition);
       }
     } else if (state.formStatus is FormSubmissionTimeout) {
       Snackbars.showMessageSnackbar(
@@ -193,7 +193,7 @@ class RegisterPage extends StatelessWidget {
   Widget _goToLoginButton() {
     return TextButton(
       onPressed: () =>
-          Get.off(() => LoginPage(), transition: Styles.startTransition),
+          Get.off(() => LoginPage(), transition: Styles.fadeTransition),
       child: Text(
         'Already signed up?',
         style: Get.theme.textTheme.labelLarge?.copyWith(

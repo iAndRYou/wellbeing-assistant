@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class Styles {
   static const Transition defaultTransition = Transition.cupertino;
-  static const Transition startTransition = Transition.fadeIn;
+  static const Transition fadeTransition = Transition.fadeIn;
 
   static const EdgeInsets homePagePadding = EdgeInsets.fromLTRB(20, 20, 20, 0);
   static const EdgeInsets defaultPadding = EdgeInsets.symmetric(horizontal: 15);

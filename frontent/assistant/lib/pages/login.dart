@@ -72,7 +72,7 @@ class LoginPage extends StatelessWidget {
 
       await Future.delayed(Snackbars.waitDuration);
       if (userBloc.state.user.isNotEmpty) {
-        Get.offAll(() => const HomePage(), transition: Styles.startTransition);
+        Get.offAll(() => const HomePage(), transition: Styles.fadeTransition);
       }
     } else if (state.formStatus is FormSubmissionTimeout) {
       Snackbars.showMessageSnackbar(
@@ -147,7 +147,7 @@ class LoginPage extends StatelessWidget {
 
   Widget _goToRegisterButton() => TextButton(
         onPressed: () =>
-            Get.off(() => RegisterPage(), transition: Styles.startTransition),
+            Get.off(() => RegisterPage(), transition: Styles.fadeTransition),
         child: Text(
           'Get started',
           style: TextStyle(
