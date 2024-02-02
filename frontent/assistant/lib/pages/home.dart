@@ -3,6 +3,7 @@ import 'package:assistant/logic/home/home_event.dart';
 import 'package:assistant/logic/home/home_state.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/preferences_repo.dart';
+import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/model/history_item.dart';
 import 'package:assistant/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,6 @@ class _HomePageState extends State<HomePage> {
           children: [
             Buttons.roundedRectangleButtonWithText(
               onPressed: () {
-                print('Wellbeing');
                 context.read<HomeBloc>().add(HomeRequestSpecificSurvey(
                     surveyType: SurveyType.wellBeing));
               },
@@ -183,9 +183,11 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             Buttons.roundedRectangleButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<UserBloc>().add(UserLogout());
+              },
               backgroundColor: Get.theme.colorScheme.secondary,
-              icon: Icons.settings,
+              icon: Icons.logout,
               iconColor: Get.theme.colorScheme.onPrimary,
               size: const Size(50, 50),
             ),

@@ -1,3 +1,4 @@
+import 'package:assistant/pages/start.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:assistant/logic/auth/auth_repo.dart';
 import 'package:assistant/logic/http_repo.dart';
@@ -6,6 +7,7 @@ import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/logic/user/user_state.dart';
 import 'package:assistant/logic/user/user_status.dart';
 import 'package:assistant/model/user.dart';
+import 'package:get/get.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final AuthRepository authRepo;
@@ -35,6 +37,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<UserLogout>((event, emit) async {
       await authRepo.logoutUserAndRemoveToken();
       emit(state.copyWithUser(user: const User.emptyValues()));
+
+      Get.offAll(() => const StartPage());
     });
 
     on<UserUpdate>((event, emit) async {

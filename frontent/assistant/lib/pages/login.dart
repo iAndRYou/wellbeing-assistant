@@ -43,7 +43,7 @@ class LoginPage extends StatelessWidget {
                       color: Get.theme.colorScheme.primary,
                     ),
                   ),
-                  _usernameField(),
+                  _emailField(),
                   _passwordField(),
                   ButtonBar(
                     alignment: MainAxisAlignment.spaceBetween,
@@ -92,15 +92,15 @@ class LoginPage extends StatelessWidget {
   }
 
   // Widgets
-  Widget _usernameField() => BlocBuilder<LoginBloc, LoginState>(
+  Widget _emailField() => BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: TextFormField(
               onChanged: (value) => context
                   .read<LoginBloc>()
-                  .add(LoginUsernameChanged(username: value)),
-              decoration: Styles.formInputDecoration(label: 'Username'),
+                  .add(LoginUsernameChanged(email: value)),
+              decoration: Styles.formInputDecoration(label: 'Email'),
             ),
           );
         },

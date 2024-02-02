@@ -9,7 +9,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepo;
   LoginBloc({required this.authRepo}) : super(LoginState()) {
     on<LoginUsernameChanged>(
-        ((event, emit) => emit(state.copyWith(username: event.username))));
+        ((event, emit) => emit(state.copyWith(username: event.email))));
 
     on<LoginPasswordChanged>(
         ((event, emit) => emit(state.copyWith(password: event.password))));
@@ -19,7 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       try {
         await authRepo.loginUserAndStoreToken(
-          username: state.username,
+          username: state.email,
           password: state.password,
         );
         await Future.delayed(const Duration(seconds: 1));
