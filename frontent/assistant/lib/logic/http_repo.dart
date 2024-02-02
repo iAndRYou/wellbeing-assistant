@@ -168,6 +168,8 @@ class HttpServiceRepository {
       } else {
         return Survey.fromJson(jsonDecode(response.body));
       }
+    } else if (response.statusCode == 404) {
+      return null;
     } else if (response.statusCode == 500) {
       throw HttpServiceServerException();
     } else {
@@ -199,6 +201,8 @@ class HttpServiceRepository {
       } else {
         return Survey.fromJson(jsonDecode(response.body));
       }
+    } else if (response.statusCode == 404) {
+      return null;
     } else if (response.statusCode == 500) {
       throw HttpServiceServerException();
     } else {
