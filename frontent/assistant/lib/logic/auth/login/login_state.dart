@@ -14,12 +14,12 @@ class LoginState {
   });
 
   LoginState copyWith({
-    String? username,
+    String? email,
     String? password,
     FormSubmitStatus? formStatus,
   }) {
     return LoginState(
-      email: username ?? this.email,
+      email: email ?? this.email,
       password: password ?? this.password,
       formStatus: formStatus ?? this.formStatus,
     );
