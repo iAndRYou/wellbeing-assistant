@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:assistant/logic/exercise/exercise_selected.dart';
 import 'package:assistant/model/access_token.dart';
+import 'package:assistant/model/exercise.dart';
 import 'package:assistant/model/history_item.dart';
+import 'package:assistant/model/meal.dart';
 import 'package:assistant/model/survey/answer.dart';
 import 'package:assistant/model/survey/survey.dart';
 import 'package:assistant/utils/enums.dart';
@@ -142,6 +145,131 @@ class HttpServiceRepository {
 
     if (response.statusCode == 200) {
       return _getHistoryFrom(response: response);
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<List<Meal>> getPreparedMeals(
+      {required AccessToken accessToken}) async {
+    var response = await get(
+      Uri.parse('$_apiAddress/meals/prepered-meals/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('meals');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)
+          .map<Meal>((item) => Meal.fromJson(item))
+          .toList();
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<List<Meal>> getIngredients({required AccessToken accessToken}) async {
+    var response = await get(
+      Uri.parse('$_apiAddress/meals/ingredients/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('ingredients');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)
+          .map<Meal>((item) => Meal.fromJson(item))
+          .toList();
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<void> sendMeals(
+      {required AccessToken accessToken, required List<Meal> meals}) async {
+    var response = await post(
+      Uri.parse('$_apiAddress/users/meal'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+      body: jsonEncode({
+        'meals': meals.map((e) => e.toJson()).toList(),
+      }),
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('sendMeals');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return;
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<List<Exercise>> getExercises(
+      {required AccessToken accessToken}) async {
+    var response = await get(
+      Uri.parse('$_apiAddress/exercises/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('exercises');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)
+          .map<Exercise>((item) => Exercise.fromJson(item))
+          .toList();
+    } else if (response.statusCode == 500) {
+      throw HttpServiceServerException();
+    } else {
+      throw Exception();
+    }
+  }
+
+  Future<void> sendExercise(
+      {required AccessToken accessToken,
+      required SelectedExercise selectedExercise}) async {
+    var response = await post(
+      Uri.parse('$_apiAddress/users/exercise'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '${accessToken.tokenType} ${accessToken.token}',
+      },
+      body: jsonEncode(selectedExercise.toJson()),
+    ).timeout(_timeoutDuration, onTimeout: _throwTimeoutException);
+
+    print('sendExercise');
+    print(response.statusCode);
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      return;
     } else if (response.statusCode == 500) {
       throw HttpServiceServerException();
     } else {
