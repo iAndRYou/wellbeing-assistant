@@ -25,8 +25,8 @@ class HistoryItem {
     return HistoryItem(
       activityId: json['activity_id'],
       activityName: json['activity_name'],
-      activityType: json['type'],
-      date: json['date'],
+      activityType: ActivityType.values[json['activity_type'] - 1],
+      date: DateTime.parse(json['date']),
     );
   }
 }
