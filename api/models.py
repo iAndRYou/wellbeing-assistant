@@ -29,10 +29,10 @@ class MealDto(BaseModel):
     name: str = Field(default=...)
     health_index: int = Field(default=...)
     glycemic_index: int = Field(default=...)
-    protein: int = Field(default=...)
-    carbohydrates: int = Field(default=...)
-    fats: int = Field(default=...)
-    fiber: int = Field(default=...)
+    protein: float = Field(default=...)
+    carbohydrates: float = Field(default=...)
+    fats: float = Field(default=...)
+    fiber: float = Field(default=...)
     meal_type: MealType = Field(default=...)
     
     @staticmethod

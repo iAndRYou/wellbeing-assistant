@@ -1,4 +1,4 @@
-from peewee import Model, SqliteDatabase, CharField, ForeignKeyField, IntegerField, ManyToManyField, DateTimeField, DateField
+from peewee import Model, SqliteDatabase, CharField, ForeignKeyField, IntegerField, FloatField, ManyToManyField, DateTimeField, DateField
 import datetime
 from .database import db
 
@@ -15,10 +15,10 @@ class Meal(BaseModel):
     name = CharField()
     health_index = IntegerField()
     glycemic_index = IntegerField()
-    protein = IntegerField()
-    carbohydrates = IntegerField()
-    fats = IntegerField()
-    fiber = IntegerField()
+    protein = FloatField()
+    carbohydrates = FloatField()
+    fats = FloatField()
+    fiber = FloatField()
     meal_type = IntegerField() #enum MealType
     
 class Survey(BaseModel):
