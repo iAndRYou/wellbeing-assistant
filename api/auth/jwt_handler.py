@@ -1,6 +1,8 @@
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from datetime import datetime, timedelta
+from peewee import DoesNotExist
+
 
 from database_modules.entities import User
 from models import UserDto
