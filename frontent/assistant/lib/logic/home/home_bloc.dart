@@ -15,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final SharedPreferencesRepository preferencesRepo;
 
   StreamSubscription? _surveySubscription;
+  StreamSubscription? _updateSubscription;
 
   HomeBloc({required this.httpRepo, required this.preferencesRepo})
       : super(HomeState()) {
@@ -30,6 +31,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           Stream.periodic(const Duration(seconds: 120)).listen((e) {
         add(HomeRequestSurvey());
       });
+
+      _updateSubscription ??=
+          Stream.periodic(const Duration(seconds: 30)).listen((e) {
+        add(HomeUpdate());
+      });
     });
 
     on<HomeUpdate>((event, emit) async {
@@ -39,11 +45,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           await httpRepo.getUserHistory(accessToken: accessToken);
 
       emit(state.copyWith(historyItems: historyItems));
-
-      _surveySubscription ??=
-          Stream.periodic(const Duration(seconds: 120)).listen((e) {
-        add(HomeRequestSurvey());
-      });
     });
 
     on<HomeRequestSurvey>((event, emit) async {
