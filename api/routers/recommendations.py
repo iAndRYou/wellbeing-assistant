@@ -7,7 +7,6 @@ from database_modules.entities import User, UserMeal, UserExercise, Survey, Ques
 from enums import ActivityType
 import datetime
 
-import recommendation_model.interface as rec_interface
 
 
 router = APIRouter(
