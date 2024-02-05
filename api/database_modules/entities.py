@@ -38,6 +38,8 @@ class SurveyAnswer(BaseModel):
     survey = ForeignKeyField(Survey)
     question = ForeignKeyField(Question)
     answer_score = IntegerField()
+    activity_id = IntegerField()
+    activity_type = IntegerField() #enum ActivityType
     
 class User(BaseModel):
     name = CharField()

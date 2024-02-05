@@ -4,7 +4,10 @@ import 'package:assistant/logic/exercise/exercise_event.dart';
 import 'package:assistant/logic/exercise/exercise_state.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/preferences_repo.dart';
+import 'package:assistant/logic/user/user_bloc.dart';
+import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/model/exercise.dart';
+import 'package:assistant/pages/home.dart';
 import 'package:assistant/utils/styles.dart';
 import 'package:assistant/utils/enums.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -41,8 +44,12 @@ class LogExcercisePage extends StatelessWidget {
                   _currentExercise(),
                   Buttons.roundedRectangleButton(
                     onPressed: state.hasCurrentExerciseFilled
-                        ? () =>
-                            context.read<ExerciseBloc>().add(ExerciseSubmit())
+                        ? () {
+                            context.read<ExerciseBloc>().add(ExerciseSubmit());
+                            context.read<UserBloc>().add(UserRequestSurvey());
+                            Get.off(() => const HomePage(),
+                                transition: Styles.fadeTransition);
+                          }
                         : null,
                     backgroundColor: Get.theme.colorScheme.secondary,
                     size: const Size(double.infinity, 50),
@@ -74,11 +81,10 @@ class LogExcercisePage extends StatelessWidget {
           itemBuilder: (context, item, isSelected) => ListTile(
             title: Text(item.name),
             leading: Icon(
-              Icons.add,
-              color: isSelected
-                  ? Get.theme.colorScheme.secondary
-                  : Get.theme.colorScheme.onBackground,
+              item.categoryIcon,
+              color: Get.theme.colorScheme.primary,
             ),
+            trailing: const Icon(Icons.add),
           ),
           scrollbarProps: const ScrollbarProps(
             thickness: 5,
@@ -131,10 +137,31 @@ class LogExcercisePage extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              Text(
-                                state.currentExercise!.category,
-                                style: Get.theme.textTheme.titleLarge?.copyWith(
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
                                   color: Get.theme.colorScheme.secondary,
+                                  borderRadius: Styles.defaultBorderRadius,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      state.currentExercise!.categoryIcon,
+                                      color: Get.theme.colorScheme.onSecondary,
+                                    ),
+                                    Styles.smallHorizontalSpace,
+                                    Text(
+                                      state.currentExercise!.category,
+                                      style: Get.theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                        color:
+                                            Get.theme.colorScheme.onSecondary,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],

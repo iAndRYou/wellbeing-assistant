@@ -44,6 +44,7 @@ class Buttons {
     required onPressed,
     required Color backgroundColor,
     Color iconColor = Colors.white,
+    Color? textColor,
     required IconData icon,
     required Size size,
     required String text,
@@ -71,9 +72,10 @@ class Buttons {
           const SizedBox(width: 10),
           Text(
             text,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
+              color: textColor,
             ),
           ),
         ],

@@ -1,10 +1,14 @@
 import 'package:assistant/common/buttons.dart';
+import 'package:assistant/common/meal.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/meal/meal_bloc.dart';
 import 'package:assistant/logic/meal/meal_event.dart';
 import 'package:assistant/logic/meal/meal_state.dart';
 import 'package:assistant/logic/preferences_repo.dart';
+import 'package:assistant/logic/user/user_bloc.dart';
+import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/model/meal.dart';
+import 'package:assistant/pages/home.dart';
 import 'package:assistant/utils/enums.dart';
 import 'package:assistant/utils/styles.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -50,9 +54,12 @@ class LogMealPage extends StatelessWidget {
                   Styles.defaultVerticalSpace,
                   Buttons.roundedRectangleButton(
                     onPressed: state.hasAllSelected
-                        ? () => {
-                              context.read<MealBloc>().add(MealSubmit()),
-                            }
+                        ? () {
+                            context.read<MealBloc>().add(MealSubmit());
+                            context.read<UserBloc>().add(UserRequestSurvey());
+                            Get.off(() => const HomePage(),
+                                transition: Styles.fadeTransition);
+                          }
                         : null,
                     backgroundColor: Get.theme.colorScheme.secondary,
                     size: const Size(double.infinity, 50),
@@ -185,62 +192,67 @@ class LogMealPage extends StatelessWidget {
   Widget _selectedMeals() {
     return BlocBuilder<MealBloc, MealState>(builder: (context, state) {
       return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.6,
         child: state.hasSelected
             ? Expanded(
                 child: ListView.builder(
                   itemCount: state.allSelected.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: Styles.contentMarginTop,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                state.allSelected[index].mealType ==
-                                        MealType.preparedMeal
-                                    ? Icons.local_restaurant
-                                    : Icons.cookie,
-                                color: Get.theme.colorScheme.primary,
-                              ),
-                              Styles.defaultHorizontalSpace,
-                              Text(
-                                state.allSelected[index].name,
-                                style: Get.textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              WheelPicker(
-                                itemCount: 51,
-                                looping: false,
-                                style: const WheelPickerStyle(
-                                  size: 80,
-                                  itemExtent: 30,
-                                  surroundingOpacity: 0.7,
-                                  magnification: 1.5,
-                                  diameterRatio: 1.5,
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  state.allSelected[index].mealType ==
+                                          MealType.preparedMeal
+                                      ? Icons.local_restaurant
+                                      : Icons.cookie,
+                                  color: Get.theme.colorScheme.primary,
                                 ),
-                                selectedIndexColor:
-                                    Get.theme.colorScheme.secondary,
-                                builder: (context, wheelIndex) {
-                                  return Text('${10 * wheelIndex}',
-                                      style: Get.textTheme.titleMedium);
-                                },
-                                onIndexChanged: (wheelIndex) {
-                                  context.read<MealBloc>().add(MealEditWeight(
-                                      state.allSelected[index],
-                                      10 * wheelIndex));
-                                },
-                              ),
-                              Text('grams', style: Get.textTheme.titleSmall),
-                            ],
-                          ),
-                        ],
-                      ),
+                                Styles.defaultHorizontalSpace,
+                                Text(
+                                  state.allSelected[index].name,
+                                  style: Get.textTheme.titleMedium,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                WheelPicker(
+                                  itemCount: 51,
+                                  looping: false,
+                                  style: const WheelPickerStyle(
+                                    size: 80,
+                                    itemExtent: 30,
+                                    surroundingOpacity: 0.7,
+                                    magnification: 1.5,
+                                    diameterRatio: 1.5,
+                                  ),
+                                  selectedIndexColor:
+                                      Get.theme.colorScheme.secondary,
+                                  builder: (context, wheelIndex) {
+                                    return Text('${10 * wheelIndex}',
+                                        style: Get.textTheme.titleMedium);
+                                  },
+                                  onIndexChanged: (wheelIndex) {
+                                    context.read<MealBloc>().add(MealEditWeight(
+                                        state.allSelected[index],
+                                        10 * wheelIndex));
+                                  },
+                                ),
+                                Text('grams', style: Get.textTheme.titleSmall),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Styles.defaultVerticalSpace,
+                        mealScores(state.allSelected[index]),
+                        mealNutriens(state.allSelected[index]),
+                        const Divider()
+                      ],
                     );
                   },
                 ),

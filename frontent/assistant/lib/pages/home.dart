@@ -7,7 +7,6 @@ import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/model/history_item.dart';
 import 'package:assistant/pages/exercise.dart';
 import 'package:assistant/pages/meal.dart';
-import 'package:assistant/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -40,13 +39,16 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
             padding: Styles.homePagePadding,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _homeHeader(),
-                Styles.largeVerticalSpace,
+                Styles.defaultVerticalSpace,
+                _headerButtons(),
+                Styles.defaultVerticalSpace,
                 _history(),
                 _menuButtons(),
+                Styles.defaultVerticalSpace,
               ],
             ),
           ),
@@ -55,21 +57,40 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _menuButtons() => BlocBuilder<HomeBloc, HomeState>(
+  Widget _headerButtons() => BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) => Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Buttons.roundedRectangleButtonWithText(
               onPressed: () {
-                context.read<HomeBloc>().add(HomeRequestSpecificSurvey(
-                    surveyType: SurveyType.wellBeing));
+                context.read<HomeBloc>().add(HomeGetMealProposition());
               },
-              backgroundColor: Get.theme.colorScheme.background,
-              icon: Icons.sentiment_very_satisfied_rounded,
-              text: 'Log wellbeing',
-              iconColor: Get.theme.colorScheme.primary,
-              size: const Size(100, 50),
+              backgroundColor: Get.theme.colorScheme.secondary,
+              icon: Icons.restaurant_outlined,
+              text: 'Meal proposition',
+              iconColor: Get.theme.colorScheme.onSecondary,
+              textColor: Get.theme.colorScheme.onSecondary,
+              size: const Size(160, 50),
             ),
+            Buttons.roundedRectangleButtonWithText(
+              onPressed: () {
+                context.read<HomeBloc>().add((HomeGetExerciseProposition()));
+              },
+              backgroundColor: Get.theme.colorScheme.secondary,
+              icon: Icons.run_circle_outlined,
+              text: 'Exercise proposition',
+              iconColor: Get.theme.colorScheme.onSecondary,
+              textColor: Get.theme.colorScheme.onSecondary,
+              size: const Size(160, 50),
+            ),
+          ],
+        ),
+      );
+
+  Widget _menuButtons() => BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             Buttons.roundedRectangleButtonWithText(
               onPressed: () {
                 Get.to(() => const LogMealPage());
@@ -78,7 +99,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icons.restaurant_outlined,
               text: 'Log meal',
               iconColor: Get.theme.colorScheme.primary,
-              size: const Size(100, 50),
+              size: const Size(160, 50),
             ),
             Buttons.roundedRectangleButtonWithText(
               onPressed: () {
@@ -86,9 +107,9 @@ class _HomePageState extends State<HomePage> {
               },
               backgroundColor: Get.theme.colorScheme.background,
               icon: Icons.run_circle_outlined,
-              text: 'Log excercise',
+              text: 'Log exercise',
               iconColor: Get.theme.colorScheme.primary,
-              size: const Size(100, 50),
+              size: const Size(160, 50),
             ),
           ],
         ),
@@ -97,7 +118,7 @@ class _HomePageState extends State<HomePage> {
   Widget _history() => BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.6,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Styles.defaultVerticalSpace,
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.6,
+                            height: MediaQuery.of(context).size.height * 0.5,
                             child: ListView.builder(
                               itemCount: state.historyItems.length,
                               itemBuilder: (context, index) => _historyItem(

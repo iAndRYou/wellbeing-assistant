@@ -1,10 +1,24 @@
 import 'package:assistant/utils/enums.dart';
+import 'package:flutter/material.dart';
 
 class Exercise {
   final int id;
   final String name;
   final ExerciseType exerciseType;
   final String category;
+
+  get categoryIcon {
+    switch (category) {
+      case 'Cardio':
+        return Icons.directions_run;
+      case 'Strength':
+        return Icons.fitness_center;
+      case 'Balance':
+        return Icons.accessibility_new;
+      case 'Flexibility':
+        return Icons.sports_gymnastics;
+    }
+  }
 
   Exercise({
     required this.id,

@@ -9,9 +9,12 @@ class ExerciseType(Enum):
     TIMED = 2
     
 class SurveyType(Enum):
-    POST_MEAL = 1
-    POST_EXERCISE = 2
-    WELL_BEING = 3
+    MEAL = 1
+    #POST_MEAL = 2
+    EXCERCISE = 2
+    #POST_EXERCISE = 4
+    #WELL_BEING = 5
+    NONE = 6
     
 class ActivityType(Enum):
     MEAL = 1
@@ -24,3 +27,4 @@ class ExerciseCategory(Enum):
     FLEXIBILITY = 3
     BALANCE = 4
     FUNCTIONAL = 5
+    
