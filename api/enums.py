@@ -17,3 +17,10 @@ class ActivityType(Enum):
     MEAL = 1
     EXERCISE = 2
     
+
+class ExerciseCategory(Enum):
+    CARDIO = 1
+    STRENGTH = 2
+    FLEXIBILITY = 3
+    BALANCE = 4
+    FUNCTIONAL = 5
