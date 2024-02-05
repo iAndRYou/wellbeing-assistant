@@ -12,6 +12,23 @@ class Meal {
   final MealType mealType;
   int? weight;
 
+  get nutriScore {
+    switch (healthIndex) {
+      case 1:
+        return 'E';
+      case 2:
+        return 'D';
+      case 3:
+        return 'C';
+      case 4:
+        return 'B';
+      case 5:
+        return 'A';
+      default:
+        return 'E';
+    }
+  }
+
   Meal({
     required this.id,
     required this.name,
