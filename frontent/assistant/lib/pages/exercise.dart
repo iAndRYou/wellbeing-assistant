@@ -74,11 +74,10 @@ class LogExcercisePage extends StatelessWidget {
           itemBuilder: (context, item, isSelected) => ListTile(
             title: Text(item.name),
             leading: Icon(
-              Icons.add,
-              color: isSelected
-                  ? Get.theme.colorScheme.secondary
-                  : Get.theme.colorScheme.onBackground,
+              item.categoryIcon,
+              color: Get.theme.colorScheme.primary,
             ),
+            trailing: const Icon(Icons.add),
           ),
           scrollbarProps: const ScrollbarProps(
             thickness: 5,
@@ -131,10 +130,31 @@ class LogExcercisePage extends StatelessWidget {
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
-                              Text(
-                                state.currentExercise!.category,
-                                style: Get.theme.textTheme.titleLarge?.copyWith(
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
                                   color: Get.theme.colorScheme.secondary,
+                                  borderRadius: Styles.defaultBorderRadius,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      state.currentExercise!.categoryIcon,
+                                      color: Get.theme.colorScheme.onSecondary,
+                                    ),
+                                    Styles.smallHorizontalSpace,
+                                    Text(
+                                      state.currentExercise!.category,
+                                      style: Get.theme.textTheme.titleLarge
+                                          ?.copyWith(
+                                        color:
+                                            Get.theme.colorScheme.onSecondary,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
