@@ -49,7 +49,7 @@ async def get_user_history(user: UserDto = Depends(validate_token)):
     '''
     Get user history, the list of meals and exercises
     '''
-    return __get_activities(user)
+    return get_activities(user)
 
 
 def __add_meal_to_user(user: UserDto, user_meal_dto : UserMealDto):
@@ -78,6 +78,12 @@ def __add_exercise_to_user(user: UserDto, user_exercise_dto : UserExerciseDto):
     )
     
 def __add_survey_answers_to_user(user: UserDto, survey_answer_request : SurveyAnswerRequest):
+    recent_activities = get_activities(user)
+    if recent_activities == None or len(recent_activities) == 0:
+        raise HTTPException(status_code=404, detail="No recent activities found")
+    most_recent_activity = recent_activities[0]
+    
+    
     for survey_answer in survey_answer_request.list_of_answers:
         try:
             Survey.get(Survey.id == survey_answer.survey_id)
@@ -92,7 +98,9 @@ def __add_survey_answers_to_user(user: UserDto, survey_answer_request : SurveyAn
         SurveyAnswer.create(
             survey_id = survey_answer.survey_id,
             question_id = survey_answer.question_id,
-            answer_score = survey_answer.answer_score
+            answer_score = survey_answer.answer_score,
+            activity_id = most_recent_activity.activity_id,
+            activity_type = most_recent_activity.activity_type.value
         )
 
 def __get_user_meals(user: UserDto):
@@ -107,7 +115,7 @@ def __get_user_exercises(user: UserDto):
             .join(Exercise)
             .where(UserExercise.user_id == user.id))
 
-def __get_activities(user : UserDto):
+def get_activities(user : UserDto):
     meals = __get_user_meals(user)
     exercises = __get_user_exercises(user)
     if meals.count() == 0 and exercises.count() == 0:
