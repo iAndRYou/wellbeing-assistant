@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:assistant/common/snackbars.dart';
 import 'package:assistant/logic/home/home_event.dart';
 import 'package:assistant/logic/home/home_state.dart';
@@ -11,7 +10,6 @@ import 'package:assistant/model/meal.dart';
 import 'package:assistant/pages/survey.dart';
 import 'package:assistant/utils/enums.dart';
 import 'package:assistant/utils/styles.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
