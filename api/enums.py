@@ -13,7 +13,7 @@ class SurveyType(Enum):
     #POST_MEAL = 2
     EXCERCISE = 2
     #POST_EXERCISE = 4
-    WELL_BEING = 5
+    #WELL_BEING = 5
     NONE = 6
     
 class ActivityType(Enum):
@@ -27,3 +27,4 @@ class ExerciseCategory(Enum):
     FLEXIBILITY = 3
     BALANCE = 4
     FUNCTIONAL = 5
+    
