@@ -308,9 +308,6 @@ class HttpServiceRepository {
   Future<Survey?> getSpecificSurvey(
       {required AccessToken accessToken,
       required SurveyType surveyType}) async {
-    print('surveyType');
-    print(surveyType.value);
-
     var response = await get(
       Uri.parse('$_apiAddress/surveys/?survey_type=${surveyType.value}'),
       headers: <String, String>{

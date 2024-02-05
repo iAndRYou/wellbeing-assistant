@@ -14,4 +14,8 @@ class HomeRequestSpecificSurvey extends HomeEvent {
   HomeRequestSpecificSurvey({required this.surveyType});
 }
 
+class HomeGetMealProposition extends HomeEvent {}
+
+class HomeGetExerciseProposition extends HomeEvent {}
+
 class HomeSurveyReceived extends HomeEvent {}

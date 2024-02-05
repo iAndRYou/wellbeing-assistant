@@ -67,5 +67,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             transition: Styles.fadeTransition);
       }
     });
+
+    on<HomeGetMealProposition>((event, emit) async {
+      var accessToken = await preferencesRepo.getSavedAccessToken();
+      print('Getting meal proposition');
+      // var meal = await httpRepo.getMealProposition(accessToken: accessToken);
+
+      // if (meal != null) {
+      //   SnackBar
+      // }
+    });
+
+    on<HomeGetExerciseProposition>((event, emit) async {
+      var accessToken = await preferencesRepo.getSavedAccessToken();
+      print('Getting exercise proposition');
+      // var exercise =
+      //     await httpRepo.getExerciseProposition(accessToken: accessToken);
+
+      // if (exercise != null) {
+      //   Snackbar
+      // }
+    });
   }
 }
