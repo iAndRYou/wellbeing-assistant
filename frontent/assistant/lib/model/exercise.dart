@@ -9,13 +9,13 @@ class Exercise {
 
   get categoryIcon {
     switch (category) {
-      case 'Aerobic':
+      case 'Cardio':
         return Icons.directions_run;
       case 'Strength':
         return Icons.fitness_center;
       case 'Balance':
         return Icons.accessibility_new;
-      case 'Stretching':
+      case 'Flexibility':
         return Icons.sports_gymnastics;
     }
   }
