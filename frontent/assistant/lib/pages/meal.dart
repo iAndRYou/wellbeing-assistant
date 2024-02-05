@@ -5,7 +5,10 @@ import 'package:assistant/logic/meal/meal_bloc.dart';
 import 'package:assistant/logic/meal/meal_event.dart';
 import 'package:assistant/logic/meal/meal_state.dart';
 import 'package:assistant/logic/preferences_repo.dart';
+import 'package:assistant/logic/user/user_bloc.dart';
+import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/model/meal.dart';
+import 'package:assistant/pages/home.dart';
 import 'package:assistant/utils/enums.dart';
 import 'package:assistant/utils/styles.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -51,9 +54,12 @@ class LogMealPage extends StatelessWidget {
                   Styles.defaultVerticalSpace,
                   Buttons.roundedRectangleButton(
                     onPressed: state.hasAllSelected
-                        ? () => {
-                              context.read<MealBloc>().add(MealSubmit()),
-                            }
+                        ? () {
+                            context.read<MealBloc>().add(MealSubmit());
+                            context.read<UserBloc>().add(UserRequestSurvey());
+                            Get.off(() => const HomePage(),
+                                transition: Styles.fadeTransition);
+                          }
                         : null,
                     backgroundColor: Get.theme.colorScheme.secondary,
                     size: const Size(double.infinity, 50),

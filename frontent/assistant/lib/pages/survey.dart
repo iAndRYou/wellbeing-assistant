@@ -6,6 +6,7 @@ import 'package:assistant/logic/survey/survey_event.dart';
 import 'package:assistant/logic/survey/survey_state.dart';
 import 'package:assistant/model/survey/question.dart';
 import 'package:assistant/model/survey/survey.dart';
+import 'package:assistant/pages/home.dart';
 import 'package:assistant/utils/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,13 +48,17 @@ class SurveyPage extends StatelessWidget {
                     Styles.defaultVerticalSpace,
                     Buttons.roundedRectangleButton(
                       onPressed: state.isSurveyFilled
-                          ? () =>
-                              context.read<SurveyBloc>().add(SurveySubmitted())
+                          ? () {
+                              context.read<SurveyBloc>().add(SurveySubmitted());
+                              Get.off(() => const HomePage(),
+                                  transition: Styles.fadeTransition);
+                            }
                           : null,
                       backgroundColor: Get.theme.colorScheme.secondary,
                       size: const Size(double.infinity, 50),
                       icon: Icons.send,
                     ),
+                    Styles.defaultVerticalSpace,
                   ],
                 );
               }),

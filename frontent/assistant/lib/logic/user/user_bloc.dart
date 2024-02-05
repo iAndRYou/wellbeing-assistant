@@ -54,8 +54,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       var survey = await httpRepo.getSurvey(accessToken: accessToken);
 
       if (survey != null) {
-        Get.to(() => SurveyPage(survey: survey),
-            transition: Styles.fadeTransition);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Get.to(() => SurveyPage(survey: survey),
+              transition: Styles.fadeTransition);
+        });
       }
     });
   }
