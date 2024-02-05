@@ -5,6 +5,8 @@ import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/preferences_repo.dart';
 import 'package:assistant/logic/user/user_event.dart';
 import 'package:assistant/model/history_item.dart';
+import 'package:assistant/pages/exercise.dart';
+import 'package:assistant/pages/meal.dart';
 import 'package:assistant/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +71,9 @@ class _HomePageState extends State<HomePage> {
               size: const Size(100, 50),
             ),
             Buttons.roundedRectangleButtonWithText(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(() => const LogMealPage());
+              },
               backgroundColor: Get.theme.colorScheme.background,
               icon: Icons.restaurant_outlined,
               text: 'Log meal',
@@ -77,7 +81,9 @@ class _HomePageState extends State<HomePage> {
               size: const Size(100, 50),
             ),
             Buttons.roundedRectangleButtonWithText(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(() => const LogExcercisePage());
+              },
               backgroundColor: Get.theme.colorScheme.background,
               icon: Icons.run_circle_outlined,
               text: 'Log excercise',
@@ -109,11 +115,19 @@ class _HomePageState extends State<HomePage> {
                           color: Get.theme.colorScheme.secondary,
                         ),
                       )
-                    : ListView.builder(
-                        itemCount: state.historyItems.length,
-                        itemBuilder: (context, index) => _historyItem(
-                          historyItem: state.historyItems[index],
-                        ),
+                    : Column(
+                        children: [
+                          Styles.defaultVerticalSpace,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.6,
+                            child: ListView.builder(
+                              itemCount: state.historyItems.length,
+                              itemBuilder: (context, index) => _historyItem(
+                                historyItem: state.historyItems[index],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
               ],
             ),

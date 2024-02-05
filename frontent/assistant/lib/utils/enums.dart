@@ -25,15 +25,15 @@ enum MealType {
   }
 }
 
-enum ExcersiseType {
+enum ExerciseType {
   repetitions,
   timed;
 
   int get value {
     switch (this) {
-      case ExcersiseType.repetitions:
+      case ExerciseType.repetitions:
         return 1;
-      case ExcersiseType.timed:
+      case ExerciseType.timed:
         return 2;
       default:
         return -1;
@@ -42,9 +42,9 @@ enum ExcersiseType {
 
   String get name {
     switch (this) {
-      case ExcersiseType.repetitions:
+      case ExerciseType.repetitions:
         return 'Repetitions';
-      case ExcersiseType.timed:
+      case ExerciseType.timed:
         return 'Timed';
       default:
         return 'Unknown';

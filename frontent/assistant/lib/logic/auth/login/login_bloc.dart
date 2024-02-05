@@ -9,7 +9,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepo;
   LoginBloc({required this.authRepo}) : super(LoginState()) {
     on<LoginUsernameChanged>(
-        ((event, emit) => emit(state.copyWith(username: event.email))));
+        ((event, emit) => emit(state.copyWith(email: event.email))));
 
     on<LoginPasswordChanged>(
         ((event, emit) => emit(state.copyWith(password: event.password))));

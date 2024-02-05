@@ -5,7 +5,7 @@ import 'package:assistant/logic/home/home_state.dart';
 import 'package:assistant/logic/http_repo.dart';
 import 'package:assistant/logic/preferences_repo.dart';
 import 'package:assistant/model/history_item.dart';
-import 'package:assistant/pages/survey_page.dart';
+import 'package:assistant/pages/survey.dart';
 import 'package:assistant/utils/styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -15,6 +15,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final SharedPreferencesRepository preferencesRepo;
 
   StreamSubscription? _surveySubscription;
+  StreamSubscription? _updateSubscription;
 
   HomeBloc({required this.httpRepo, required this.preferencesRepo})
       : super(HomeState()) {
@@ -30,6 +31,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           Stream.periodic(const Duration(seconds: 120)).listen((e) {
         add(HomeRequestSurvey());
       });
+
+      _updateSubscription ??=
+          Stream.periodic(const Duration(seconds: 30)).listen((e) {
+        add(HomeUpdate());
+      });
     });
 
     on<HomeUpdate>((event, emit) async {
@@ -39,11 +45,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           await httpRepo.getUserHistory(accessToken: accessToken);
 
       emit(state.copyWith(historyItems: historyItems));
-
-      _surveySubscription ??=
-          Stream.periodic(const Duration(seconds: 120)).listen((e) {
-        add(HomeRequestSurvey());
-      });
     });
 
     on<HomeRequestSurvey>((event, emit) async {
